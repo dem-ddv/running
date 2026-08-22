@@ -179,7 +179,7 @@
 .site-brand{display:block;width:fit-content;color:inherit;text-decoration:none}.site-brand:hover{text-decoration:none}.site-brand b{display:block;font-size:30px;font-weight:800;line-height:1;letter-spacing:-.045em}.site-brand small{display:block;margin-top:6px;color:var(--muted);font-size:12px;line-height:1.35}
 .site-tabs{align-self:end;display:flex;gap:5px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#fff}.site-tabs a,.site-tabs span{padding:7px 12px;border-radius:8px;color:var(--muted);font-size:12px;font-weight:700;text-decoration:none}.site-tabs a:hover{color:#31543e;background:var(--g3);text-decoration:none}.site-tabs .active{background:var(--g);color:#fff}
 @media(max-width:640px){.site-masthead{grid-template-columns:1fr;gap:9px;min-height:112px;padding:12px 14px 10px;text-align:center}.site-heading{justify-self:center}.site-kicker,.site-brand small{display:none}.site-brand b{font-size:20px;letter-spacing:-.03em}.site-tabs{align-self:center;justify-self:center}.site-tabs a,.site-tabs span{padding:6px 11px;font-size:11px}}
-@media(max-width:640px){.heatmatrix{--heat-row-size:22px;--heat-week-col:22px}.heatwrap{min-width:1582px}.heatyears{grid-auto-rows:var(--heat-row-size)}.heatcell{height:var(--heat-row-size)}}
+@media(max-width:640px){.heatmatrix{--heat-row-size:22px;--heat-week-col:22px}.heatwrap{min-width:1582px}.heatyears{grid-auto-rows:var(--heat-row-size)}.heatcell{height:var(--heat-row-size)}.heatmonthly>div:first-child{position:sticky;z-index:4;left:0;align-self:stretch;background:#fff;box-shadow:4px 0 #fff}}
 </style>
 </head>
 <body>
@@ -258,7 +258,7 @@ function secFmt(sec){if(sec==null)return '–'; sec=Math.round(sec); let h=Math.
 function minFmt(m){if(m==null)return '–'; return secFmt(m*60)}
 function paceFmt(minPerKm){if(minPerKm==null)return '–'; let total=Math.round(minPerKm*60),m=Math.floor(total/60),s=total%60; return `${m}:${String(s).padStart(2,'0')}/км`;}
 let mobileTipTimer=0;
-function showTip(ev,html){tip.innerHTML=html; tip.style.left=ev.clientX+'px'; tip.style.top=ev.clientY+'px'; tip.style.opacity=1}
+function showTip(ev,html){tip.innerHTML=html;tip.style.opacity=1;const rect=ev.currentTarget?.getBoundingClientRect(),pointX=Number.isFinite(ev.clientX)?ev.clientX:rect.left+rect.width/2,pointY=Number.isFinite(ev.clientY)?ev.clientY:rect.top;if(innerWidth<=640){tip.style.transform='none';const w=tip.offsetWidth,h=tip.offsetHeight,left=Math.max(8,Math.min(innerWidth-w-8,pointX-w/2)),above=pointY-h-12,top=above>=8?above:Math.min(innerHeight-h-8,pointY+12);tip.style.left=left+'px';tip.style.top=Math.max(8,top)+'px'}else{tip.style.transform='translate(-50%,-110%)';tip.style.left=pointX+'px';tip.style.top=pointY+'px'}}
 function hideTip(){tip.style.opacity=0;if(mobileTipTimer){clearTimeout(mobileTipTimer);mobileTipTimer=0}}
 function bindMobileTip(el,open){el.setAttribute('data-mobile-tip','1');el.onpointerdown=e=>{if(window.innerWidth<=640&&e.pointerType!=='mouse'){open(e);if(mobileTipTimer)clearTimeout(mobileTipTimer);mobileTipTimer=setTimeout(hideTip,4000);}};}
 document.addEventListener('pointerdown',e=>{if(window.innerWidth<=640&&!e.target.closest?.('[data-mobile-tip]'))hideTip();},{passive:true});
@@ -1503,7 +1503,7 @@ function renderGeo(){
   const activate=id=>{$$('[data-geo-id]').forEach(el=>{el.classList.toggle('is-active',el.dataset.geoId===id);el.classList.toggle('is-muted',el.dataset.geoId!==id&&el.classList.contains('geo-dot'));});};
   const clear=()=>{$$('[data-geo-id]').forEach(el=>el.classList.remove('is-active','is-muted'));hideTip();};
   const mainPlaces=arr.filter(p=>p.id!=='comrades');
-  mainPlaces.forEach(p=>{const c=coords(p),x=c.x+(p.ox||0),y=c.y+(p.oy||0),r=Math.min(18,6+Math.sqrt(p.count)*2.2);if(p.ox||p.oy)pointLayer.appendChild(svgEl('line',{x1:c.x,y1:c.y,x2:x,y2:y,class:'geo-leader'}));const dot=svgEl('circle',{cx:x,cy:y,r,class:'geo-dot','data-geo-id':p.id,tabindex:0,'aria-label':`${p.name}: ${p.count} ${pluralRu(p.count,'старт','старта','стартов')}`});const open=e=>{activate(p.id);showTip(e,tipText(p));};dot.onmousemove=open;dot.onpointerdown=open;dot.onfocus=open;dot.onmouseleave=clear;dot.onblur=clear;pointLayer.appendChild(dot);if(p.count>1){const lx=x+(p.dx||12),ly=y+(p.dy||-10),anchor=p.anchor||'start';if(p.labelLeader)labelLayer.appendChild(svgEl('line',{x1:x,y1:y,x2:lx+(anchor==='end'?4:-4),y2:ly+3,class:'geo-label-leader'}));labelLayer.appendChild(svgEl('text',{x:lx,y:ly,'text-anchor':anchor,class:'geo-label'},`${p.name} · ${p.count}`));}});
+  mainPlaces.forEach(p=>{const c=coords(p),x=c.x+(p.ox||0),y=c.y+(p.oy||0),r=Math.min(18,6+Math.sqrt(p.count)*2.2);if(p.ox||p.oy)pointLayer.appendChild(svgEl('line',{x1:c.x,y1:c.y,x2:x,y2:y,class:'geo-leader'}));const dot=svgEl('circle',{cx:x,cy:y,r,class:'geo-dot','data-geo-id':p.id,tabindex:0,'aria-label':`${p.name}: ${p.count} ${pluralRu(p.count,'старт','старта','стартов')}`});const open=e=>{activate(p.id);showTip(e,tipText(p),true);};dot.onmousemove=open;dot.onpointerdown=open;dot.onfocus=open;dot.onmouseleave=clear;dot.onblur=clear;pointLayer.appendChild(dot);if(p.count>1){const lx=x+(p.dx||12),ly=y+(p.dy||-10),anchor=p.anchor||'start';if(p.labelLeader)labelLayer.appendChild(svgEl('line',{x1:x,y1:y,x2:lx+(anchor==='end'?4:-4),y2:ly+3,class:'geo-label-leader'}));labelLayer.appendChild(svgEl('text',{x:lx,y:ly,'text-anchor':anchor,class:'geo-label'},`${p.name} · ${p.count}`));}});
   const comrades=arr.find(p=>p.id==='comrades'),saCard=$('#geoSaCard'),saSvg=$('#geoSaMap');saSvg.innerHTML='';
   const saLand=svgEl('g',{transform:'translate(28 84) scale(.76)'});GEO_SA_PATHS.forEach((d,i)=>saLand.appendChild(svgEl('path',{d,class:'geo-sa-land','fill-rule':'evenodd',opacity:i?'.8':'1'})));saSvg.appendChild(saLand);
   saSvg.appendChild(svgEl('path',{d:'M126 130 Q132 132 138 140',class:'geo-sa-route'}));
@@ -1511,13 +1511,13 @@ function renderGeo(){
   saSvg.appendChild(svgEl('circle',{cx:138,cy:140,r:6,class:'geo-sa-dot'}));
   saSvg.appendChild(svgEl('text',{x:121,y:122,'text-anchor':'end',class:'geo-sa-label'},'Питермарицбург'));
   saSvg.appendChild(svgEl('text',{x:147,y:147,class:'geo-sa-label'},'Дурбан'));
-  saCard.hidden=!comrades;if(comrades){$('#geoSaMeta').textContent=`Comrades · ${comrades.count} ${pluralRu(comrades.count,'старт','старта','стартов')}`;const open=e=>{activate('comrades');showTip(e,tipText(comrades));};saCard.onmousemove=open;saCard.onpointerdown=open;saCard.onmouseleave=clear;}
+  saCard.hidden=!comrades;if(comrades){$('#geoSaMeta').textContent=`Comrades · ${comrades.count} ${pluralRu(comrades.count,'старт','старта','стартов')}`;const open=e=>{activate('comrades');showTip(e,tipText(comrades),true);};saCard.onmousemove=open;saCard.onpointerdown=open;saCard.onmouseleave=clear;}
   $('#geoTotal').textContent=`${races.length} ${pluralRu(races.length,'старт','старта','стартов')}`;
   const periodLabel=earlyRacesEnabled()?`${EARLY_RACE_FIRST_YEAR}–${state.to}`:(state.from===state.to?String(state.from):`${state.from}–${state.to}`);
   $('#geoPeriod').textContent=`${arr.length} ${pluralRu(arr.length,'место','места','мест')} · ${periodLabel}`;
   const leaders=arr.filter(p=>p.count>1),rest=arr.filter(p=>p.count===1);
   $('#geoList').innerHTML=leaders.map(p=>`<span class="geo-place-inline" data-geo-id="${p.id}"><span>${p.name}</span><b>${p.count}</b></span>`).join('<i>·</i>')+(rest.length?`<i>·</i><span class="geo-more">А ещё: ${rest.map(p=>p.name).join(', ')}</span>`:'');
-  $$('#geoList .geo-place-inline').forEach(el=>{const p=arr.find(x=>x.id===el.dataset.geoId),open=e=>{activate(p.id);showTip(e,tipText(p));};el.onmousemove=open;el.onpointerdown=open;el.onmouseleave=clear;});
+  $$('#geoList .geo-place-inline').forEach(el=>{const p=arr.find(x=>x.id===el.dataset.geoId),open=e=>{activate(p.id);showTip(e,tipText(p),true);};el.onmousemove=open;el.onpointerdown=open;el.onmouseleave=clear;});
 }
 function renderMix(){
   const labels={
