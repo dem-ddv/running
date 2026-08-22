@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Мой беговой дневник</title>
+  <desc id="desc">Белая беговая траектория в форме строчной буквы d на зелёном фоне</desc>
+  <rect width="64" height="64" rx="14" fill="#4f8964"/>
+  <g transform="translate(0 -3)">
+    <path
+      d="M45 16v26.5C45 51.8 38.9 58 30 58s-15-6.5-15-15.5S21.5 27 30 27s15 6.5 15 15.5"
+      fill="none"
+      stroke="#fff"
+      stroke-width="7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle cx="45" cy="16" r="4.6" fill="#fff"/>
+  </g>
+</svg>
