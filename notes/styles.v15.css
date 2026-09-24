@@ -103,9 +103,16 @@
   .article-back{margin-bottom:20px}
 }
 
+.catalog-home-link{
+  min-width:0;
+  color:var(--ink);
+  font:700 17px/1.2 Georgia,serif;
+  text-decoration:none;
+}
+.catalog-home-link:hover{color:var(--green)}
 .catalog-dashboard-link{
-  display:inline-block;
-  margin:0 0 14px;
+  flex:none;
+  margin-left:auto;
   color:var(--green);
   font-size:12px;
   font-weight:750;
