@@ -102,3 +102,26 @@
   .archive-title{font-size:16px}
   .article-back{margin-bottom:20px}
 }
+
+.catalog-dashboard-link{
+  display:inline-block;
+  margin:0 0 14px;
+  color:var(--green);
+  font-size:12px;
+  font-weight:750;
+  text-decoration:none;
+}
+.catalog-dashboard-link:hover{color:var(--green-dark)}
+.article-end-back{
+  display:block;
+  width:fit-content;
+  margin:24px auto 0;
+  padding:0;
+  border:0;
+  border-bottom:1px solid rgba(22,75,59,.3);
+  background:transparent;
+  color:var(--green);
+  font:750 12px/1.5 var(--ui);
+  cursor:pointer;
+}
+.article-end-back:hover{color:var(--green-dark);border-bottom-color:currentColor}
