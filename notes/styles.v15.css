@@ -133,3 +133,8 @@
   cursor:pointer;
 }
 .article-end-back:hover{color:var(--green-dark);border-bottom-color:currentColor}
+
+@media(min-width:1101px){
+  .article-mode .article-edge-nav{display:grid!important}
+  .article-edge-nav .notes-home-link{display:none}
+}
