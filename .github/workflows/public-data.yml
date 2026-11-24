@@ -1,0 +1,13 @@
+name: Check public data
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  public-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/public-data.mjs check
