@@ -11,3 +11,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node scripts/public-data.mjs check
+      - name: Verify deployed HTML
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          node --input-type=module <<'JS'
+          import { readFile } from 'node:fs/promises';
+          import { setTimeout } from 'node:timers/promises';
+
+          const paths = ['index.html', 'insights-test/index.html'];
+          const root = 'https://ddvpage.ru/running/';
+          const pages = await Promise.all(paths.map(async path => ({
+            url: new URL(path.replace(/index\.html$/, ''), root),
+            expected: await readFile(path),
+          })));
+
+          for (let attempt = 0; attempt < 20; attempt++) {
+            const checks = await Promise.all(pages.map(async ({ url, expected }) => {
+              url.searchParams.set('verify', process.env.GITHUB_SHA + '-' + attempt);
+              try {
+                const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+                return response.ok && expected.equals(Buffer.from(await response.arrayBuffer()));
+              } catch {
+                return false;
+              }
+            }));
+            if (checks.every(Boolean)) {
+              console.log('Both public HTML pages match the checked files.');
+              process.exit(0);
+            }
+            if (attempt < 19) await setTimeout(15000);
+          }
+
+          throw new Error('Public Pages did not serve the checked HTML.');
+          JS
