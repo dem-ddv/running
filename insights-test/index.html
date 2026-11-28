@@ -537,7 +537,7 @@ function milestoneData(){
     {date:'2021-06-05', short:'ЗКМ', title:'Зелёное кольцо Москвы', note:'Приключение и первые 100 миль', subnote:'Длинный бег по красивому маршруту через парки и набережные Москвы.', blog:'notes/#2021-100-mil-zelenoe-koltso-moskvy', group:'2021'},
     {date:'2023-05-13', short:'Сутки', title:'Сутки бегом', note:'Самый длинный бег, приключение и съёмки фильма', subnote:'Восьмое место на чемпионате Москвы по суточному бегу.', blog:'notes/#2023-sutki-begom-otchet-o-starte', film:'https://youtu.be/Ar9gcveXUiY?si=FvJYPMiWH7_DFx0h', group:'2023'},
     {date:'2024-10-13', short:'Марафон за 3:20', title:'Марафон за 3:20', note:'Действующий личник на марафоне', subnote:'Пик формы после длинного цикла с шестью тренировками в неделю.', blog:'notes/#2024-moskovskiy-marafon-2024-proryv', group:'2024'},
-    {now:true, short:'Сейчас', title:'Сейчас', note:'Бег – дежурная, а не фокусная часть жизни', subnote:'Бег без больших целей, тренерского плана и шести тренировок в неделю.', year:String(nowYear), group:'now'}
+    {now:true, short:'Сейчас', title:'Сейчас', note:'Бег – дежурная, а не фокусная часть жизни.', subnote:'Отдыхаю от ультр, готовлюсь к ЛР на паркране Измайлово в 2027-м.', year:String(nowYear), group:'now'}
   ];
   return rows.map(x=>{
     if(x.now) return {...x, distance:null, result:null, year:x.year};
